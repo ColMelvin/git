@@ -8,7 +8,7 @@ test_description='perl interface (Git.pm) on MSWin32'
 
 find_MSWin32_perl() {
 	local perl
-	for perl in $(which -a perl); do
+	for perl in $(type -ap perl); do
 		if "$perl" -e 'exit 1 if $^O ne q{MSWin32}'; then
 			echo "$perl"
 			return 0
