@@ -924,6 +924,22 @@ perl () {
 	command "$PERL_PATH" "$@" 2>&7
 } 7>&2 2>&4
 
+mswin32_perl () {
+	local GITPERLLIB="$GITPERLLIB"
+	if test_have_prereq CYGWIN || test_have_prereq MINGW; then
+		GITPERLLIB="$(cygpath -w -p "$GITPERLLIB")"
+	fi
+	command "$MSWIN32_PERL_PATH" "$@" 2>&7
+} 7>&2 2>&4
+
+mswin32_path () {
+	local file="$1"
+	if test_have_prereq CYGWIN || test_have_prereq MINGW; then
+		file="$(cygpath -w "$file")"
+	fi
+	echo "$file"
+}
+
 # Is the value one of the various ways to spell a boolean true/false?
 test_normalize_bool () {
 	git -c magic.variable="$1" config --bool magic.variable 2>/dev/null
