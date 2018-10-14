@@ -2453,6 +2453,19 @@ LIB_PERL_GEN := $(patsubst perl/%.pm,perl/build/lib/%.pm,$(LIB_PERL))
 LIB_CPAN := $(wildcard perl/FromCPAN/*.pm perl/FromCPAN/*/*.pm)
 LIB_CPAN_GEN := $(patsubst perl/%.pm,perl/build/lib/%.pm,$(LIB_CPAN))
 
+# Set MSWIN32_PERL_PATH=false to disable search
+ifndef MSWIN32_PERL_PATH
+MSWIN32_PERL_PATH = $(shell \
+	for perl in $$(type -ap perl); do \
+		if "$$perl" -e 'exit 1 if $$^O ne q{MSWin32}'; then \
+			echo "$$perl"; \
+			exit 0; \
+		fi; \
+	done \
+)
+endif
+MSWIN32_PERL_PATH_SQ = $(subst ','\'',$(MSWIN32_PERL_PATH))
+
 ifndef NO_PERL
 all:: $(LIB_PERL_GEN)
 ifndef NO_PERL_CPAN_FALLBACKS
@@ -2550,6 +2563,7 @@ GIT-BUILD-OPTIONS: FORCE
 	@echo NO_UNIX_SOCKETS=\''$(subst ','\'',$(subst ','\'',$(NO_UNIX_SOCKETS)))'\' >>$@+
 	@echo PAGER_ENV=\''$(subst ','\'',$(subst ','\'',$(PAGER_ENV)))'\' >>$@+
 	@echo DC_SHA1=\''$(subst ','\'',$(subst ','\'',$(DC_SHA1)))'\' >>$@+
+	@echo MSWIN32_PERL_PATH=\''$(subst ','\'',$(MSWIN32_PERL_PATH_SQ))'\' >>$@+
 ifdef TEST_OUTPUT_DIRECTORY
 	@echo TEST_OUTPUT_DIRECTORY=\''$(subst ','\'',$(subst ','\'',$(TEST_OUTPUT_DIRECTORY)))'\' >>$@+
 endif

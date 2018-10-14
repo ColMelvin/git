@@ -59,7 +59,7 @@ then
 fi
 
 . "$GIT_BUILD_DIR"/GIT-BUILD-OPTIONS
-export PERL_PATH SHELL_PATH
+export MSWIN32_PERL_PATH PERL_PATH SHELL_PATH
 
 # if --tee was passed, write the output not only to the terminal, but
 # additionally to the file test-results/$BASENAME.out, too.
@@ -1217,29 +1217,10 @@ test_lazy_prereq SHA1 '
 	test $(git hash-object /dev/null) = e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
 '
 
-find_mswin32_perl() {
-	local perl
-	for perl in $(type -ap perl); do
-		if "$perl" -e 'exit 1 if $^O ne q{MSWin32}'; then
-			echo "$perl"
-			return 0
-		fi
-	done
-	return 1
-}
-
 # Some tests require a native Win32 Perl interpreter, such as Strawberry Perl
 # or ActiveState Perl, which is not distributed with Git for Windows.  These
-# tests only run if an appropriate Perl is specified (via MSWIN32_PERL_PATH) or
-# if one can be found in the system PATH.  To forcibly disable searching for an
-# appropriate Perl, set MSWIN32_PERL_PATH=false.
+# tests only run if an appropriate Perl is specified (via MSWIN32_PERL_PATH).
 test_lazy_prereq MSWIN32_PERL '
-	if test -n "$MSWIN32_PERL_PATH"
-	then
-		$MSWIN32_PERL_PATH -e "exit 1 if \$^0 ne q{MSWin32}"
-	else
-		MSWIN32_PERL_PATH=$(find_mswin32_perl)
-		test $? -ne 0 && exit $?
-		export MSWIN32_PERL_PATH
-	fi
+	test -n "$MSWIN32_PERL_PATH" &&
+	$MSWIN32_PERL_PATH -e "exit 1 if \$^0 ne q{MSWin32}"
 '

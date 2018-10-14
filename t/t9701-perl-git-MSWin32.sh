@@ -15,8 +15,6 @@ print_and_run () {
 	echo "$@"
 	"$@"
 }
-print_and_run type perl
-print_and_run type mswin32_perl
 print_and_run $MSWIN32_PERL_PATH -MTest::More -e 0
 print_and_run command $MSWIN32_PERL_PATH -MTest::More -e 0
 print_and_run mswin32_perl -MTest::More -e 0
