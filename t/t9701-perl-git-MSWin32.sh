@@ -11,14 +11,6 @@ if ! test_have_prereq MSWIN32_PERL; then
 	test_done
 fi
 
-print_and_run () {
-	echo "$@"
-	"$@"
-}
-print_and_run $MSWIN32_PERL_PATH -MTest::More -e 0
-print_and_run command $MSWIN32_PERL_PATH -MTest::More -e 0
-print_and_run mswin32_perl -MTest::More -e 0
-
 mswin32_perl -MTest::More -e 0 2>/dev/null || {
 	skip_all="MSWin32 Perl Test::More unavailable, skipping test"
 	test_done

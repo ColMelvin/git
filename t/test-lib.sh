@@ -1222,5 +1222,5 @@ test_lazy_prereq SHA1 '
 # tests only run if an appropriate Perl is specified (via MSWIN32_PERL_PATH).
 test_lazy_prereq MSWIN32_PERL '
 	test -n "$MSWIN32_PERL_PATH" &&
-	$MSWIN32_PERL_PATH -e "exit 1 if \$^0 ne q{MSWin32}"
+	$MSWIN32_PERL_PATH -e "exit 1 if \$^O ne q{MSWin32}"
 '
